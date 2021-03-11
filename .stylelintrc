@@ -1,0 +1,62 @@
+{
+  "extends": [
+    "stylelint-config-sass-guidelines",
+    "stylelint-config-concentric-order",
+    "stylelint-prettier/recommended"
+  ],
+  "plugins": [
+    "stylelint-prettier",
+    "stylelint-scss"
+  ],
+  "rules": {
+    "selector-id-pattern": "^root$",
+    "selector-max-compound-selectors": 4,
+    "max-nesting-depth": 4,
+    "color-named": "never",
+    "unit-allowed-list": [
+      [
+        "rem",
+        "%",
+        "vh",
+        "vw",
+        "px",
+        "fr",
+        "deg",
+        "dppx",
+        "dpi",
+        "s"
+      ],
+      {
+        "ignoreProperties": {
+          "deg": [
+            "transform"
+          ]
+        }
+      }
+    ],
+    "order/properties-alphabetical-order": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global"
+        ]
+      }
+    ],
+    "selector-pseudo-element-no-unknown": true,
+    "function-parentheses-space-inside": "never-single-line",
+    "rule-empty-line-before": [
+      "always",
+      {
+        "except": [
+          "first-nested",
+          "after-single-line-comment"
+        ],
+        "ignore": [
+          "after-comment"
+        ]
+      }
+    ],
+    "scss/selector-no-redundant-nesting-selector": true
+  }
+}
