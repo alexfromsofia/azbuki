@@ -1,40 +1,38 @@
 import { Text } from "@chakra-ui/react";
+import moment from "moment";
+import Calendar from "../components/calendar";
 import { Container } from "../components/Container";
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { Main } from "../components/Main";
-import playerModel, { IPlayer } from "../models/Player";
-import dbConnect from "../utils/dbConnect";
+import { useGetItems } from "../hooks/useGetItems";
+import { IPlayer } from "../models/Player";
+import { IPractice } from "../models/Practice";
 
-interface Props {
-  players: IPlayer[];
-}
+const Index = () => {
+  const { data: players } = useGetItems("/api/player");
+  const { data: practices } = useGetItems("/api/practice");
 
-const Index = ({ players }: Props) => (
-  <Container height="100vh">
-    <Main>
-      <Text>{JSON.stringify(players)}</Text>
-      <Text>Welcome to Azbuki Basketball</Text>
-      <Text>Next practice</Text>
-      <Text>{players[0]._id}</Text>
-    </Main>
-
-    <DarkModeSwitch />
-  </Container>
-);
-
-/* Retrieves pet(s) data from mongodb database */
-export async function getServerSideProps() {
-  await dbConnect();
-
-  /* find all the data in our database */
-  const result = await playerModel.find({});
-  const players = result.map((doc) => {
-    const player = doc.toObject();
-    player._id = player._id.toString();
-    return player;
-  });
-
-  return { props: { players } };
-}
+  const handleBoxClick = async (date: Date) => {
+    const weekday = moment(date).isoWeekday();
+    const requestData = { weekday, price: 100 };
+    await fetch("/api/practice", {
+      method: "POST",
+      body: JSON.stringify(requestData),
+    });
+  };
+  console.log(players);
+  console.log(practices);
+  return (
+    <Container height="100vh">
+      <DarkModeSwitch />
+      <Main>
+        {/* <Text>{JSON.stringify(players)}</Text> */}
+        <Text>Welcome to Azbuki Basketball</Text>
+        <Text>Please choose practice days:</Text>
+        <Calendar onChange={handleBoxClick} />
+      </Main>
+    </Container>
+  );
+};
 
 export default Index;
